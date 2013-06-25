@@ -1,4 +1,5 @@
 <?php
+header("Access-Control-Allow-Origin: *");
 $urls = array(
     "image/*" => "//html5sec.org/test.svg",
     "image/svg" => "//html5sec.org/test.svg",
@@ -31,7 +32,7 @@ if (isset($_SERVER['HTTP_ACCEPT'])) {
         $type = $entry[1];
         $prio = $entry[0];
         if (array_key_exists($type, $urls)) {
-            header("Location:  $urls[$type]");
+            header("Location: $urls[$type]");
             exit();
         }
         
