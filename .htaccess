@@ -1,0 +1,2 @@
+Header unset X-Content-Type-Options 
+ErrorDocument 404 /index.php
